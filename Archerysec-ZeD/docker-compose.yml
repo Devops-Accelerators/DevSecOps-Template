@@ -1,0 +1,45 @@
+version: '3.6'
+
+services:
+  db:
+    image: postgres:10.1-alpine
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=archerysec
+      - POSTGRES_PASSWORD=archerysec
+      - POSTGRES_USER=archerysec
+
+  archerysec:
+    image: archerysec/archerysec
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    links:
+      - db:db
+    environment:
+      - DB_PASSWORD=archerysec
+      - DB_USER=archerysec
+      - DB_NAME=archerysec
+      - DB_HOST=db
+      - DJANGO_SETTINGS_MODULE=archerysecurity.settings.development
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-"SETME"}
+      - DJANGO_DEBUG=1
+      - EMAIL_HOST=mailhog
+      - EMAIL_PORT=1025
+    container_name: archerysec
+   
+  zaproxy:
+    image: owasp/zap2docker-stable
+    command: zap.sh -daemon -host 0.0.0.0 -port 8090 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
+    ports:
+      - "8090:8090"
+    expose:
+    # ZAP is running on 8090, we want it to be accessible by our tools
+      - "8090"
+    links:
+      - archerysec
+    container_name: zapscanner
