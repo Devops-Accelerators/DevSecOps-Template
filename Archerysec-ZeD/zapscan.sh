@@ -1,5 +1,3 @@
-pip install archerysec-cli
-
 DATE=`date +%Y-%m-%d`
 
 ARCHERY_USER=admin
@@ -11,16 +9,16 @@ export SCAN_ID=`archerysec-cli -s ${ARCHERY_HOST} -u ${ARCHERY_USER} -p ${ARCHER
 
 echo "scan id......" $SCAN_ID
 
-python /var/jenkins_home/archery_script.py --scanner=zap_scan --scan_id=$SCAN_ID --username=${ARCHERY_USER} --password=${ARCHERY_PASS} --host=${ARCHERY_HOST} --high=10 --medium=15
+python /var/lib/jenkins/archery/archery_script.py --scanner=zap_scan --scan_id=$SCAN_ID --username=${ARCHERY_USER} --password=${ARCHERY_PASS} --host=${ARCHERY_HOST} --high=10 --medium=15
 
-export job_status=`python /var/jenkins_home/archery_script.py --scanner=zap_scan --scan_id=$SCAN_ID --username=${ARCHERY_USER} --password=${ARCHERY_PASS} --host=${ARCHERY_HOST} --high=10 --medium=15`
+export job_status=`python /var/lib/jenkins/archery/archery_script.py --scanner=zap_scan --scan_id=$SCAN_ID --username=${ARCHERY_USER} --password=${ARCHERY_PASS} --host=${ARCHERY_HOST} --high=10 --medium=15`
 
 if [ -n "$job_status" ]
 then
   #Run your script commands here
+   echo "$job_status"
    echo "Build Sucess"
 else
  echo "BUILD FAILURE: Other build is unsuccessful or status could not be obtained."
  exit 100
 fi
-
