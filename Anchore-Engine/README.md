@@ -1,6 +1,6 @@
 # Setting up Anchore Engine
 
-This guide helps set up anchore engine container so that it can be integrated with the jenkins using anchore engine plugin.
+The Anchore Engine is an open source project that provides a centralized service for performing detailed analysis on container images, running queries, producing reports and defining ploicies that can be used in CI/CD pipelines. This guide helps set up anchore engine container so that it can be integrated with the jenkins using anchore engine plugin.
 
 # Pre-requisite
 
@@ -19,4 +19,8 @@ This guide helps set up anchore engine container so that it can be integrated wi
   - Finally, run the docker image.
     ```
     docker-compose up -d
+    ```
+  - Follow the below link to understand how anchore engine can be integrated with jenkins.
+    ```
+    https://wiki.jenkins.io/display/JENKINS/Anchore+Container+Image+Scanner+Plugin
     ```
