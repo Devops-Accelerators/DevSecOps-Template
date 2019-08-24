@@ -21,6 +21,5 @@ The Anchore Engine is an open source project that provides a centralized service
     docker-compose up -d
     ```
   - Follow the below link to understand how anchore engine can be integrated with jenkins.
-    ```
     [Integrate Anchore engine with Jenkins](https://wiki.jenkins.io/display/JENKINS/Anchore+Container+Image+Scanner+Plugin)
-    ```
+    
