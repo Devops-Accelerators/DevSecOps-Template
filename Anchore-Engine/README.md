@@ -22,5 +22,5 @@ The Anchore Engine is an open source project that provides a centralized service
     ```
   - Follow the below link to understand how anchore engine can be integrated with jenkins.
     ```
-    https://wiki.jenkins.io/display/JENKINS/Anchore+Container+Image+Scanner+Plugin
+    [Integrate Anchore engine with Jenkins](https://wiki.jenkins.io/display/JENKINS/Anchore+Container+Image+Scanner+Plugin)
     ```
