@@ -2,7 +2,7 @@
 
 This guide helps set up anchore engine container so that it can be integrated with the jenkins using anchore engine plugin.
 
-# Pre-requisite:
+# Pre-requisite
 
 - Must have docker and docker-compose installed on the host.
 
