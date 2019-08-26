@@ -16,7 +16,7 @@ The Anchore Engine is an open source project that provides a centralized service
     ```
     mkdir -p db
     ```
-  - *Do ensure to change the password in the config.yaml as shown below* 
+  - ***Do ensure to change the password in the config.yaml***
     
   - Finally, run the docker image.
     ```
