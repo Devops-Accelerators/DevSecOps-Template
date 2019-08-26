@@ -30,16 +30,16 @@
   sudo apt-get install jq
   ```
 - Now run the scripts, archery_script.py and zapscan.sh on the jenkins CI pipeline. Replace the ARCHERY_HOST value with your system ip and TARGET_URL value with the application url.
- ```
- node {
-   stage('DAST') {
-     sh """
-		    echo ${targetURL}
-		    export ARCHERY_HOST=http://your_system_ip_address:8000
-		    export TARGET_URL='http://${targetURL}/app'
-		    bash `pwd`/zapscan.sh || true
-	  """
+  ```
+  node {
+    stage('DAST') {
+      sh """
+	 	    echo ${targetURL}
+	 	    export ARCHERY_HOST=http://your_system_ip_address:8000
+	 	    export TARGET_URL='http://${targetURL}/app'
+	 	    bash `pwd`/zapscan.sh || true
+	   """
   
- ```
+  ```
 
   
