@@ -17,6 +17,18 @@ The Anchore Engine is an open source project that provides a centralized service
     mkdir -p db
     ```
   - ***Do ensure to change the password in the config.yaml***
+    ```
+    credentials:
+      users:
+         admin:
+           password: <your_password_here>
+           email: 'admin@myemail.com'
+           external_service_auths:
+           #  anchoreio:
+           #    anchorecli:
+           #      auth: 'myanchoreiouser:myanchoreiopass'
+           #auto_policy_sync: True
+    ```
     
   - Finally, run the docker image.
     ```
