@@ -12,10 +12,12 @@ The Anchore Engine is an open source project that provides a centralized service
     ```
     git clone https://github.com/Devops-Accelerators/DevSecOps.git && cd DevSecOps/Anchore-Engine
     ```
-  - Create a directory to persist db data.
+  - Create a directory to persist data.
     ```
     mkdir -p db
     ```
+  - *Do ensure to change the password in the config.yaml as shown below*
+    
   - Finally, run the docker image.
     ```
     docker-compose up -d
