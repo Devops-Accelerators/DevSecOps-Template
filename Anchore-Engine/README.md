@@ -21,7 +21,7 @@ The Anchore Engine is an open source project that provides a centralized service
     credentials:
       users:
          admin:
-           password: <your_password_here>
+           password: 'your_password_here'
            email: 'admin@myemail.com'
            external_service_auths:
            #  anchoreio:
