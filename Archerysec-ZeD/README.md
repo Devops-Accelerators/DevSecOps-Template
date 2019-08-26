@@ -5,10 +5,10 @@
 - Must have docker and docker-compose installed.
   
 # Getting Started
--  Run the docker-compose file to set up the environment on your system.
+- Run the docker-compose file to set up the environment on your system.
   ```
   git clone https://github.com/Devops-Accelerators/DevSecOps-Template.git && cd Archerysec-ZeD
-  
+
   docker-compose up -d
   ```
 - Once the containers are up and running check if they are accessible by accessing the below urls
@@ -29,5 +29,17 @@
   # Install jq tool
   sudo apt-get install jq
   ```
+- Now run the scripts, archery_script.py and zapscan.sh on the jenkins CI pipeline. Replace the ARCHERY_HOST value with your system ip and TARGET_URL value with the application url.
+ ```
+ node {
+   stage('DAST') {
+     sh """
+		    echo ${targetURL}
+		    export ARCHERY_HOST=http://your_system_ip_address:8000
+		    export TARGET_URL='http://${targetURL}/app'
+		    bash `pwd`/zapscan.sh || true
+	  """
+  
+ ```
 
   
