@@ -1,4 +1,4 @@
-# Setting up Anchore Engine
+# Anchore Engine
 
 The Anchore Engine is an open source project that provides a centralized service for performing detailed analysis on container images, running queries, producing reports and defining ploicies that can be used in CI/CD pipelines. This guide helps set up anchore engine container so that it can be integrated with the jenkins using anchore engine plugin.
 
