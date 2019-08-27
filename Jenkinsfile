@@ -7,7 +7,19 @@ properties ([
 ])
 
 node {
-
+  
+  parameters {
+    string( name: 'appRepoURL',
+            defaultValue: '',
+            description: "git url of the application's repo")
+    string( name: 'dockerImage'
+            defaultValue: '',
+            description: 'docker image name with tag')
+    string( name: 'targetURL',
+            defaultValue: '',
+            description: "web application's URL" )
+  }
+       
         stage ('Checkout SCM') 
         {
           checkout scm
