@@ -1,6 +1,6 @@
 properties ([
   parameters([
-    [$class: 'GlobalVariableStringParameterDefenition', defaultValue: ''. description: "name of the project", name: 'projectName'],
+    [$class: 'GlobalVariableStringParameterDefenition', defaultValue: '', description: "name of the project", name: 'projectName'],
     [$class: 'GlobalVariableStringParameterDefenition', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
     [$class: 'GlobalVariableStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
   ])
