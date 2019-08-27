@@ -47,4 +47,5 @@ node {
                   bash `pwd`/Archerysec-Zed/zapscan.sh || true
              """
         }
+}
        
