@@ -29,7 +29,7 @@ node {
         
         stage ('SAST')
         {
-          #sonarqube
+          // sonarqube
         }
         
         stage ('Container Image Scan')
