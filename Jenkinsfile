@@ -1,10 +1,10 @@
-properties ([
+/*properties ([
   parameters([
     [$class: 'StringParameter', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
     [$class: 'StringParameter', defaultValue: '', description: "name of the image", name: 'dockerImage'],
     [$class: 'StringParameter', defaultValue: '', description: "web application's url", name: 'targetURL']
   ])
-])
+])*/
 
 node {
   
