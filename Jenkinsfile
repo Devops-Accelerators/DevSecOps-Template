@@ -55,7 +55,7 @@ node {
         stage ('DAST')
         {
           sh """
-                  docker-compose -f Archerysec-ZeD/docker-compose.yaml up -d
+                  docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
                   sleep 10
                   export ARCHERY_HOST='http://127.0.0.1:8000'
                   export TARGET_URL=$targetURL
