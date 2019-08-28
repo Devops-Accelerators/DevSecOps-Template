@@ -21,6 +21,8 @@ node {
           sh "rm trufflehog || true"
           sh "docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog"
           sh "cat trufflehog"
+          sh "mkdir -p reports/trufflehog"
+          sh "mv trufflehog reports/trufflehog"
         } */
         
         stage ('Source Composition Analysis')
@@ -30,6 +32,8 @@ node {
           repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/pom.xml" 
           sh "rm -rf ${repoName}"
+          sh "mkdir -p reports/snyk"
+          sh "mv *.json *.html reports/snyk"
         }
         
         stage ('SAST')
