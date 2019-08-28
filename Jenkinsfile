@@ -15,16 +15,16 @@ node {
           sh "ls -al" 
         }
         
-        stage ('Check secrets')
+        /*stage ('Check secrets')
         {
           sh "rm trufflehog || true"
           sh "docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog"
           sh "cat trufflehog"
-        }
+        } */
         
         stage ('Source Composition Analysis')
         {
-          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${appRepoURL}/pom.xml"    
+          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "https://github.com/cehkunal/webapp/raw/master/pom.xml"    
         }
         
         stage ('SAST')
