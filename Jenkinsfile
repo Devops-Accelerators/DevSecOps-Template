@@ -49,7 +49,7 @@ node {
           sh "rm anchore_images || true"
           sh """ echo "$dockerImage" > anchore_images"""
           anchore 'anchore_images'
-          sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
+          //sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
         }
         
        /* stage ('DAST')
