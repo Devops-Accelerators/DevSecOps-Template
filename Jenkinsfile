@@ -25,7 +25,7 @@ node {
           sh "mv trufflehog reports/trufflehog"
         } */
         
-        stage ('Source Composition Analysis')
+        /*stage ('Source Composition Analysis')
         {
           sh "git clone ${appRepoURL}"
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
@@ -34,7 +34,7 @@ node {
           sh "rm -rf ${repoName}"
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
-        }
+        }*/
         
         stage ('SAST')
         {
