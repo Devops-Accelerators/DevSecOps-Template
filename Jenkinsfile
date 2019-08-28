@@ -1,10 +1,10 @@
-/*properties ([
+properties ([
   parameters([
-    [$class: 'StringParameter', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
-    [$class: 'StringParameter', defaultValue: '', description: "name of the image", name: 'dockerImage'],
-    [$class: 'StringParameter', defaultValue: '', description: "web application's url", name: 'targetURL']
+    [$class: 'StringParameterDefinition', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
+    [$class: 'StringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
+    [$class: 'StringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
   ])
-])*/
+])
 
 node {
   
@@ -24,7 +24,7 @@ node {
         
         stage ('Source Composition Analysis')
         {
-          snykSecurity projectName: '${projectName}', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-personal', targetFile: 'pom.xml'
+          snykSecurity projectName: '${projectName}', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-personal', targetFile: "${appRepoURL}/pom.xml"
         }
         
         stage ('SAST')
