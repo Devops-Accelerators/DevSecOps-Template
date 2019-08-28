@@ -6,6 +6,7 @@
   ])
 ])*/
 
+def repoName;
 node {
   
         stage ('Checkout SCM') 
@@ -24,7 +25,10 @@ node {
         
         stage ('Source Composition Analysis')
         {
-          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "https://github.com/cehkunal/webapp/raw/master/pom.xml"    
+          sh "git clone ${appRepoURL}"
+          repoName = sh(returnStdout: true, script: """echo \$(basename ${apiRepoURL.trim()})""").trim()
+          sh "cd repoName"
+          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "pom.xml"    
         }
         
         stage ('SAST')
