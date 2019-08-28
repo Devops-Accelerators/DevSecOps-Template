@@ -82,7 +82,7 @@ default_admin_email: 'admin@myanchore'
 credentials:
   users:
      admin:
-       password: <your_password>
+       password: 'foobar'
        email: 'admin@myemail.com'
        external_service_auths:
        #  anchoreio:
