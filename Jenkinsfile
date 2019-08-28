@@ -52,13 +52,15 @@ node {
           //sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
         }
         
-       /* stage ('DAST')
+        stage ('DAST')
         {
           sh """
-                  export ARCHERY_HOST='http://ipaddr:port'
+                  docker-compose -f Archerysec-Zed/docker-compose.yaml up -d
+                  sleep 10
+                  export ARCHERY_HOST='http://localhost:8000'
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-Zed/zapscan.sh || true
              """
-        } */
+        }
 }
        
