@@ -45,6 +45,7 @@ node {
         {
           sh "mkdir -p Anchore-Engine/db"
           sh "docker-compose -f Anchore-Engine/docker-compose.yaml up -d"
+          sh "sleep 20"
           sh "rm anchore_images || true"
           sh """ echo "$dockerImage" > anchore_images"""
           anchore 'anchore_images'
