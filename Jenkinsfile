@@ -59,7 +59,7 @@ node {
                   sleep 10
                   export ARCHERY_HOST='http://localhost:8000'
                   export TARGET_URL=$targetURL
-                  bash `pwd`/Archerysec-Zed/zapscan.sh || true
+                  bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
         }
 }
