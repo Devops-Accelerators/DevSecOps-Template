@@ -18,6 +18,7 @@ node {
         stage ('Check secrets')
         {
           sh "rm trufflehog || true"
+          sh "docker run hello-world"
           sh "docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog"
           sh "cat trufflehog"
         }
