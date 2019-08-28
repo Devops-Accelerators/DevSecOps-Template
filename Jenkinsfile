@@ -41,7 +41,7 @@ node {
           // sonarqube
         }
         
-        stage ('Container Image Scan')
+        /*stage ('Container Image Scan')
         {
           sh "mkdir -p Anchore-Engine/db"
           sh "docker-compose -f Anchore-Engine/docker-compose.yaml up -d"
@@ -50,14 +50,14 @@ node {
           sh """ echo "$dockerImage" > anchore_images"""
           anchore 'anchore_images'
           //sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
-        }
+        }*/
         
         stage ('DAST')
         {
           sh """
                   docker-compose -f Archerysec-Zed/docker-compose.yaml up -d
                   sleep 10
-                  export ARCHERY_HOST='http://localhost:8000'
+                  export ARCHERY_HOST='http://127.0.0.1:8000'
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
