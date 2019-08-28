@@ -24,7 +24,7 @@ node {
         
         stage ('Source Composition Analysis')
         {
-          snykSecurity projectName: '${projectName}', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-personal', targetFile: "${appRepoURL}/pom.xml"
+          snykSecurity snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${appRepoURL}/pom.xml"      
         }
         
         stage ('SAST')
