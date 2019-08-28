@@ -39,18 +39,21 @@ node {
         
         stage ('Container Image Scan')
         {
+          sh "mkdir -p Anchore-Engine/db"
+          sh "docker-compose -f Anchore-Engine/docker-compose.yaml up -d"
           sh "rm anchore_images || true"
           sh """ echo "$dockerImage" > anchore_images"""
           anchore 'anchore_images'
+          sh "docker-compose -f Anchore-Engine/docker-compose.yaml down -d"
         }
         
-        stage ('DAST')
+       /* stage ('DAST')
         {
           sh """
                   export ARCHERY_HOST='http://ipaddr:port'
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-Zed/zapscan.sh || true
              """
-        }
+        } */
 }
        
