@@ -27,6 +27,7 @@ node {
         {
           sh "git clone ${appRepoURL}"
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
+          repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
           sh "echo ${repoName}"
           sh "cd ${repoName}"
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "pom.xml" 
