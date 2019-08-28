@@ -1,8 +1,8 @@
 properties ([
   parameters([
-    [$class: 'StringParameterDefinition', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
-    [$class: 'StringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
-    [$class: 'StringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
+    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
+    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
+    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
   ])
 ])
 
