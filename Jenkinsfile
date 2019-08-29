@@ -55,11 +55,7 @@ node {
           }
           
           withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-          }
-          
-          timeout(time 5, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true 
+            sh "${scannerHome}/bin/sonar-scanner -Dsonar.host.url=127.0.0.1:9000 -Dsonar.login=admin -Dsonar.password=admin"
           }
         }
         
