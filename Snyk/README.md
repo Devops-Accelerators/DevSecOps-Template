@@ -3,4 +3,4 @@
   
 # Prerequisites
 - You must sign up for an account with Snyk before you begin.
-- Install the (snyk plugin)[https://wiki.jenkins.io/display/JENKINS/Snyk+Security+Plugin] in the jenkins server.
+- Install the [snyk plugin](https://wiki.jenkins.io/display/JENKINS/Snyk+Security+Plugin) in the jenkins server.
