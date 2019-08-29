@@ -55,7 +55,7 @@ node {
           }
           
           withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/sonar-scanner -Dsonar.host.url=127.0.0.1:9000 -Dsonar.login=admin -Dsonar.password=admin"
+            sh """${scannerHome}/sonar-scanner -Dsonar.host.url=http://lab1.southcentralus.cloudapp.azure.com:9000 -Dsonar.login=admin -Dsonar.password=admin"""
           }
         }
         
