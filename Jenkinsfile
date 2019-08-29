@@ -16,16 +16,16 @@ node {
           sh "ls -al" 
         }
         
-        /*stage ('Check secrets')
+        stage ('Check secrets')
         {
           sh "rm trufflehog || true"
           sh "docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog"
           sh "cat trufflehog"
           sh "mkdir -p reports/trufflehog"
           sh "mv trufflehog reports/trufflehog"
-        } */
+        } 
         
-        /*stage ('Source Composition Analysis')
+        stage ('Source Composition Analysis')
         {
           sh "git clone ${appRepoURL}"
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
@@ -34,14 +34,17 @@ node {
           sh "rm -rf ${repoName}"
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
-        }*/
+        }
         
         stage ('SAST')
         {
           // sonarqube
+          sh """
+              docker-compose -f Sonarqube/sonar.yml up -d
+          """
         }
         
-        /*stage ('Container Image Scan')
+        stage ('Container Image Scan')
         {
           sh "mkdir -p Anchore-Engine/db"
           sh "docker-compose -f Anchore-Engine/docker-compose.yaml up -d"
@@ -49,8 +52,10 @@ node {
           sh "rm anchore_images || true"
           sh """ echo "$dockerImage" > anchore_images"""
           anchore 'anchore_images'
+          currentBuild.result = 'SUCCESS'
+
           //sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
-        }*/
+        }
         
         stage ('DAST')
         {
