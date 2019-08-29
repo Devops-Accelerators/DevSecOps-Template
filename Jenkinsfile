@@ -25,7 +25,7 @@ node {
          """
         }
         
-        stage ('Check secrets')
+        /*stage ('Check secrets')
         {
            sh """
             rm trufflehog || true
@@ -45,7 +45,7 @@ node {
           sh "rm -rf ${repoName}"
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
-        }
+        }*/
         
         stage ('SAST')
         {
@@ -59,7 +59,7 @@ node {
           }
         }
         
-        stage ('Container Image Scan')
+        /*stage ('Container Image Scan')
         {
           try { 
               sh "mkdir -p Anchore-Engine/db"
@@ -81,6 +81,6 @@ node {
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
-        }
+        }*/
 }
        
