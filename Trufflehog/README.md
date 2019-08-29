@@ -10,5 +10,5 @@ Searches through git repositories for secrets, digging deep into commit history 
 -  Add the following lines in your Jenkins stage.
 
  ```
-    docker run gesellix/trufflehog --json --regex <your_git_repo_url
+    docker run gesellix/trufflehog --json --regex <your_git_repo_url>
  ```
