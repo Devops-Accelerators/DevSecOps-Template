@@ -15,14 +15,25 @@ node {
           workspace = pwd ()
           sh "ls -al" 
         }
+  
+        stage ('pre-build setup')
+        {
+         sh"""
+         docker-compose -f Sonarqube/sonar.yml up -d
+         docker-compose -f Anchore-Engine/docker-compose.yaml up -d
+         docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
+         """
+        }
         
         stage ('Check secrets')
         {
-          sh "rm trufflehog || true"
-          sh "docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog"
-          sh "cat trufflehog"
-          sh "mkdir -p reports/trufflehog"
-          sh "mv trufflehog reports/trufflehog"
+           sh """
+            rm trufflehog || true
+            docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
+            cat trufflehog
+            mkdir -p reports/trufflehog
+            mv trufflehog reports/trufflehog
+            """
         } 
         
         stage ('Source Composition Analysis')
@@ -39,21 +50,27 @@ node {
         stage ('SAST')
         {
           // sonarqube
-          sh """
-              docker-compose -f Sonarqube/sonar.yml up -d
-          """
+          environment {
+             scannerHome = tool 'SonarQubeScanner' 
+          }
+          
+          withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+          }
+          
+          timeout(time 5, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true 
+          }
         }
         
         stage ('Container Image Scan')
         {
           try { 
               sh "mkdir -p Anchore-Engine/db"
-              sh "docker-compose -f Anchore-Engine/docker-compose.yaml up -d"
               sh "sleep 20"
               sh "rm anchore_images || true"
               sh """ echo "$dockerImage" > anchore_images"""
               anchore 'anchore_images'
-              //sh "docker-compose -f Anchore-Engine/docker-compose.yaml down"
           }
           catch(error){
                    currentBuild.result = 'SUCCESS'
@@ -63,8 +80,7 @@ node {
         stage ('DAST')
         {
           sh """
-                  docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
-                  sleep 10
+                  
                   export ARCHERY_HOST='http://127.0.0.1:8000'
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
