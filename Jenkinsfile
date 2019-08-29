@@ -47,7 +47,7 @@ node {
           sh "mv *.json *.html reports/snyk"
         }*/
         
-        stage ('SAST')
+        /*stage ('SAST')
         {
           // sonarqube
           environment {
@@ -57,7 +57,7 @@ node {
           withSonarQubeEnv('sonarqube') {
             sh """${scannerHome}/bin/sonar-scanner -Dsonar.host.url=http://lab1.southcentralus.cloudapp.azure.com:9000 -Dsonar.login=admin -Dsonar.password=admin"""
           }
-        }
+        }*/
         
         /*stage ('Container Image Scan')
         {
