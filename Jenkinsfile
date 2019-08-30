@@ -87,7 +87,7 @@ node {
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
-        }
+        } */
   
         stage ('Clean up')
         {
@@ -96,6 +96,6 @@ node {
               docker-compose -f Anchore-Engine/docker-compose.yaml down
               docker-compose -f Archerysec-ZeD/docker-compose.yml down
           """
-        }*/
+        }
 }
        
