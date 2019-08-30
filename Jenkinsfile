@@ -20,12 +20,13 @@ node {
         {
          sh"""
          docker-compose -f Sonarqube/sonar.yml up -d
+         sh "mkdir -p Anchore-Engine/db"
          docker-compose -f Anchore-Engine/docker-compose.yaml up -d
          docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
          """
         }
         
-        /*stage ('Check secrets')
+        stage ('Check secrets')
         {
            sh """
             rm trufflehog || true
@@ -45,9 +46,9 @@ node {
           sh "rm -rf ${repoName}"
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
-        }*/
+        }
         
-        /*stage ('SAST')
+        stage ('SAST')
         {
           // sonarqube
           environment {
@@ -57,13 +58,11 @@ node {
           withSonarQubeEnv('sonarqube') {
             sh """${scannerHome}/bin/sonar-scanner -Dsonar.host.url=http://lab1.southcentralus.cloudapp.azure.com:9000 -Dsonar.login=admin -Dsonar.password=admin"""
           }
-        }*/
+        }
         
-        /*stage ('Container Image Scan')
+        stage ('Container Image Scan')
         {
           try { 
-              sh "mkdir -p Anchore-Engine/db"
-              sh "sleep 20"
               sh "rm anchore_images || true"
               sh """ echo "$dockerImage" > anchore_images"""
               anchore 'anchore_images'
@@ -81,7 +80,7 @@ node {
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
-        }*/
+        }
   
         stage ('Clean up')
         {
