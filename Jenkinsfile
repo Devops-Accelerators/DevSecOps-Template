@@ -52,7 +52,6 @@ node {
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
           repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/pom.xml" 
-          sh "rm -rf ${repoName}"
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
         }
@@ -60,13 +59,10 @@ node {
         stage ('SAST')
         {
           // sonarqube
-          environment {
-             scannerHome = tool 'SonarQubeScanner' 
-          }
-          
           withSonarQubeEnv('sonarqube') {
-            sh """${scannerHome}/bin/sonar-scanner -Dsonar.host.url=http://lab1.southcentralus.cloudapp.azure.com:9000 -Dsonar.login=admin -Dsonar.password=admin"""
+            mvn -f ${repoName}/ sonar:sonar
           }
+          sh "rm -rf ${repoName}"
         }
         
         stage ('Container Image Scan')
