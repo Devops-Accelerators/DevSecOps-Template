@@ -61,7 +61,7 @@ node {
           // sonarqube
           withSonarQubeEnv('sonarqube') {
             dir("${repoName}"){
-                sh "mvn sonar:sonar"
+                sh "mvn clean package sonar:sonar"
             }
           }
           sh "rm -rf ${repoName}"
