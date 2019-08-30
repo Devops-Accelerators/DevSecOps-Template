@@ -26,7 +26,7 @@ node {
          """
         }
         
-        stage ('Check secrets')
+        /*stage ('Check secrets')
         {
            sh """
             rm trufflehog || true
@@ -54,7 +54,7 @@ node {
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/pom.xml" 
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
-        }
+        }*/
         
         stage ('SAST')
         {
@@ -79,7 +79,7 @@ node {
           }
         }
         
-        stage ('DAST')
+       /* stage ('DAST')
         {
           sh """
                   
@@ -96,6 +96,6 @@ node {
               docker-compose -f Anchore-Engine/docker-compose.yaml down
               docker-compose -f Archerysec-ZeD/docker-compose.yml down
           """
-        }
+        }*/
 }
        
