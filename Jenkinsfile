@@ -20,7 +20,7 @@ node {
         {
          sh"""
          docker-compose -f Sonarqube/sonar.yml up -d
-         sh "mkdir -p Anchore-Engine/db"
+         mkdir -p Anchore-Engine/db
          docker-compose -f Anchore-Engine/docker-compose.yaml up -d
          docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
          """
