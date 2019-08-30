@@ -35,8 +35,8 @@ node {
             mkdir -p reports/trufflehog
             mv trufflehog reports/trufflehog
             """
-           def trufflehog = readFile "reports/trufflehog"
-          if (trufflehog.length() == 0){
+           def truffle = readFile "reports/trufflehog/trufflehog"
+          if (truffle.length() == 0){
            echo "Good to go" 
           }
           else{
