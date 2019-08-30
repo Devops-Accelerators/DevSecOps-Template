@@ -30,7 +30,7 @@ node {
         {
            sh """
             rm trufflehog || true
-            docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
+            docker run gesellix/trufflehog --json --regex --entropy=False ${appRepoURL} > trufflehog
             cat trufflehog
             mkdir -p reports/trufflehog
             mv trufflehog reports/trufflehog
