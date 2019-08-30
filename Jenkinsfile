@@ -41,7 +41,7 @@ node {
           }
           else{
            echo "Warning! Secrets are committed into your git repository." 
-           input(continue?yes:no);
+           input(message: Do you wish to continue? )
           }
             
             
