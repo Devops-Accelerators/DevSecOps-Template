@@ -35,6 +35,15 @@ node {
             mkdir -p reports/trufflehog
             mv trufflehog reports/trufflehog
             """
+           def trufflehog = readFile "`pwd`/reports/trufflehog"
+          if (trufflehog.length() == 0){
+           echo "Good to go" 
+          }
+          else{
+           echo "Warning! Secrets are committed into your git repository." 
+          }
+            
+            
         } 
         
         stage ('Source Composition Analysis')
