@@ -60,7 +60,7 @@ node {
         {
           // sonarqube
           withSonarQubeEnv('sonarqube') {
-            mvn -f ${repoName}/ sonar:sonar
+            mvn sonar:sonar
           }
           sh "rm -rf ${repoName}"
         }
