@@ -66,9 +66,8 @@ node {
               }
 	    }
 	  
-            snykSecurity projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
-            sh ""
-            sh ""
+            snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
+   	    exit 1
 	  }
 	  catch (error) {
 		currentBuild.Result = "UNSTABLE"	  
@@ -119,6 +118,7 @@ node {
         stage ('Clean up')
         {
           sh """
+	    rm -r ${repoName}
 	    mkdir -p reports/trufflehog
             mv trufflehog reports/trufflehog
 	    mkdir -p reports/snyk
