@@ -29,22 +29,24 @@ node {
         
         stage ('Check secrets')
         {
-          sh """
-          rm trufflehog || true
-          docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
-          cat trufflehog
-          mkdir -p reports/trufflehog
-          mv trufflehog reports/trufflehog
-          """
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh """
+            rm trufflehog || true
+            docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
+            cat trufflehog
+            mkdir -p reports/trufflehog
+            mv trufflehog reports/trufflehog
+            """
 	  
-	  def truffle = readFile "reports/trufflehog/trufflehog"
+	    def truffle = readFile "reports/trufflehog/trufflehog"
 		   
-	  if (truffle.length() == 0){
-            echo "Good to go" 
-          }
-          else {
-            echo "Warning! Secrets are committed into your git repository." 
-          }
+	    if (truffle.length() == 0){
+              echo "Good to go" 
+            }
+            else {
+              echo "Warning! Secrets are committed into your git repository." 
+            }
+	  }
         } 
         
 	stage ('Source Composition Analysis')
