@@ -47,10 +47,10 @@ node {
           }
         } */
         
-      try {
+      //try {
 	stage ('Source Composition Analysis')
         {
-	  
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	    sh "git clone ${appRepoURL} || true" 
             repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
             repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
@@ -68,11 +68,12 @@ node {
             snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
             sh "mkdir -p reports/snyk"
             sh "mv *.json *.html reports/snyk"
+	  }
 	}
-      }
-      catch (error) {
-	    echo "Moving fwd"
-      }
+     // }
+     // catch (error) {
+	//    echo "Moving fwd"
+     // }
 
         
         /*stage ('SAST')
