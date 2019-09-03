@@ -58,8 +58,11 @@ node {
 		}
 	  else{
 		  app_type = "package.json"
+		  dir ("${repoName}"){
+			npm install	  
+		  }
 	  	}
-          snykSecurity failOnIssues: false, monitorProjectOnBuild: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
+          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
         }
