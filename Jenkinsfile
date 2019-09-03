@@ -59,7 +59,7 @@ node {
 	  else{
 		  app_type = "package.json"
 		  dir ("${repoName}"){
-			npm install	  
+			sh "npm install"
 		  }
 	  	}
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
