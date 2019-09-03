@@ -7,7 +7,7 @@
 ])*/
 
 def repoName="";
-def app_type="pom.xml";
+def app_type="";
 node {
   
         stage ('Checkout SCM') 
@@ -52,7 +52,7 @@ node {
 	  sh "git clone ${appRepoURL} || true" 
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
           repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
-	  if (${appType}.equalsIgnoreCase("Java"))
+	  if ((${appType}).equalsIgnoreCase("Java"))
 		{
 		  app_type = "pom.xml"	
 		}
