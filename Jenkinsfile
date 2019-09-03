@@ -17,7 +17,7 @@ node {
           sh "ls -al" 
         }
   
-        /*stage ('pre-build setup')
+        stage ('pre-build setup')
         {
           sh """
           docker-compose -f Sonarqube/sonar.yml up -d
@@ -45,7 +45,7 @@ node {
           else {
             echo "Warning! Secrets are committed into your git repository." 
           }
-        } */
+        } 
         
 	stage ('Source Composition Analysis')
         {
@@ -114,6 +114,7 @@ node {
         stage ('Clean up')
         {
           sh """
+	    docker system prune -f
             docker-compose -f Sonarqube/sonar.yml down
             docker-compose -f Anchore-Engine/docker-compose.yaml down
             docker-compose -f Archerysec-ZeD/docker-compose.yml down
