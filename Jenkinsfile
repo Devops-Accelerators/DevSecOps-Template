@@ -49,24 +49,29 @@ node {
         
         stage ('Source Composition Analysis')
         {
-	  sh "git clone ${appRepoURL} || true" 
-          repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
-          repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
+	  try {
+	    sh "git clone ${appRepoURL} || true" 
+            repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
+            repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
 	  
-	  if (appType.equalsIgnoreCase("Java")) {
-	    app_type = "pom.xml"	
-	  }
-	  else {
-	    app_type = "package.json"
-	    dir ("${repoName}") {
-	      sh "npm install"
-            }
-	  }
+	    if (appType.equalsIgnoreCase("Java")) {
+	      app_type = "pom.xml"	
+	    }
+	    else {
+	      app_type = "package.json"
+	      dir ("${repoName}") {
+	        sh "npm install"
+              }
+	    }
 	  
-          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
-          sh "mkdir -p reports/snyk"
-          sh "mv *.json *.html reports/snyk"
-        }
+            snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
+            sh "mkdir -p reports/snyk"
+            sh "mv *.json *.html reports/snyk"
+	  }
+	  catch (error) {
+	    current.BuildResult = 'FAILURE'
+	  }
+	}
         
         /*stage ('SAST')
         {
@@ -84,7 +89,7 @@ node {
 	    }	
 	  }
 	 }
-        }
+        }*/
         
         stage ('Container Image Scan')
         {
@@ -94,11 +99,11 @@ node {
             anchore 'anchore_images'
           }
           catch(error){
-            currentBuild.result = 'SUCCESS'
+            currentBuild.result = 'FAILURE'
           }
         }
         
-        stage ('DAST')
+        /*stage ('DAST')
         {
           sh """
             export ARCHERY_HOST='http://127.0.0.1:8000'
