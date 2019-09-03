@@ -35,8 +35,6 @@ node {
             rm trufflehog || true
             docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
             cat trufflehog
-            mkdir -p reports/trufflehog
-            mv trufflehog reports/trufflehog
             """
 	  
 	    def truffle = readFile "reports/trufflehog/trufflehog"
@@ -53,7 +51,7 @@ node {
         
 	stage ('Source Composition Analysis')
         {
-	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	  try {
 	    sh "git clone ${appRepoURL} || true" 
             repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
             repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
@@ -69,8 +67,11 @@ node {
 	    }
 	  
             snykSecurity projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
-            sh "mkdir -p reports/snyk"
-            sh "mv *.json *.html reports/snyk"
+            sh ""
+            sh ""
+	  }
+	  catch (error) {
+		currentBuild.Result = "UNSTABLE"	  
 	  }
 	}
 
@@ -118,6 +119,10 @@ node {
         stage ('Clean up')
         {
           sh """
+	    mkdir -p reports/trufflehog
+            mv trufflehog reports/trufflehog
+	    mkdir -p reports/snyk
+	    mv *.json *.html reports/snyk
 	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_Engine ||  true
 	    docker system prune -f
             docker-compose -f Sonarqube/sonar.yml down
