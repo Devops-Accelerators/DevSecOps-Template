@@ -46,6 +46,7 @@ node {
             }
             else {
               echo "Warning! Secrets are committed into your git repository." 
+	      currentBuild.Result = "UNSTABLE"
             }
 	  }
         } 
