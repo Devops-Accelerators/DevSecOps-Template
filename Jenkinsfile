@@ -64,7 +64,7 @@ node {
           sh "mv *.json *.html reports/snyk"
         }
         
-        stage ('SAST')
+        /*stage ('SAST')
         {
           // sonarqube
           withSonarQubeEnv('sonarqube') {
@@ -103,7 +103,7 @@ node {
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
-        } 
+        } */
   
         stage ('Clean up')
         {
