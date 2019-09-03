@@ -51,7 +51,7 @@ node {
         
 	stage ('Source Composition Analysis')
         {
-	  try {
+	   catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
 	    sh "git clone ${appRepoURL} || true" 
             repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
             repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
@@ -67,15 +67,12 @@ node {
 	    }
 	  
             snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
-   	    exit 1
-	  }
-	  catch (error) {
-		currentBuild.Result = "UNSTABLE"	  
+   	    
 	  }
 	}
 
         
-        /*stage ('SAST')
+        stage ('SAST')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	    if (appType.equalsIgnoreCase("Java")) {
@@ -93,7 +90,7 @@ node {
 	      }
 	     }
             }
-	  }*/
+	  }
         
         stage ('Container Image Scan')
         {
@@ -104,7 +101,7 @@ node {
 	  }
         }
         
-        /*stage ('DAST')
+        stage ('DAST')
         {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	    sh """
@@ -113,7 +110,7 @@ node {
               bash `pwd`/Archerysec-ZeD/zapscan.sh || true
             """
           }
-	}*/
+	}
   
         stage ('Clean up')
         {
