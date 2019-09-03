@@ -26,7 +26,7 @@ node {
          """
         }
         
-        /*stage ('Check secrets')
+        stage ('Check secrets')
         {
            sh """
             rm trufflehog || true
@@ -44,7 +44,7 @@ node {
           }
             
             
-        } */
+        } 
         
         stage ('Source Composition Analysis')
         {
@@ -87,7 +87,7 @@ node {
           }
         }
         
-       /* stage ('DAST')
+        stage ('DAST')
         {
           sh """
                   
@@ -95,7 +95,7 @@ node {
                   export TARGET_URL=$targetURL
                   bash `pwd`/Archerysec-ZeD/zapscan.sh || true
              """
-        } */
+        } 
   
         stage ('Clean up')
         {
