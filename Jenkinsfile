@@ -118,7 +118,7 @@ node {
         {
           sh """
 	    mkdir -p reports/Anchore-Engine
-	    cp /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_engine
+	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_engine
 	    docker system prune -f
             docker-compose -f Sonarqube/sonar.yml down
             docker-compose -f Anchore-Engine/docker-compose.yaml down
