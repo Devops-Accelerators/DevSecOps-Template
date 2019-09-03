@@ -7,6 +7,7 @@
 ])*/
 
 def repoName="";
+def app_type="pom.xml";
 node {
   
         stage ('Checkout SCM') 
@@ -51,7 +52,14 @@ node {
 	  sh "git clone ${appRepoURL} || true" 
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
           repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
-          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/pom.xml" 
+	  if (${appType}.equalsIgnoreCase("Java"))
+		{
+		  app_type = "pom.xml"	
+		}
+	  else{
+		  app_type = "package.json"
+	  	}
+          snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
         }
