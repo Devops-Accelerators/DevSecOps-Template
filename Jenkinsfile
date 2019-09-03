@@ -37,7 +37,7 @@ node {
             cat trufflehog
             """
 	  
-	    def truffle = readFile "reports/trufflehog/trufflehog"
+	    def truffle = readFile "trufflehog"
 		   
 	    if (truffle.length() == 0){
               echo "Good to go" 
