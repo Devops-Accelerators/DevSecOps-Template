@@ -71,7 +71,7 @@ node {
 	}
       }
       catch (error) {
-	    current.BuildResult = 'FAILURE'
+	    echo "Moving fwd"
       }
 
         
