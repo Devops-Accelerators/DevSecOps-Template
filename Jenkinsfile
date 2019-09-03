@@ -30,7 +30,7 @@ node {
         
         stage ('Check secrets')
         {
-	  
+	  catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
             sh """
             rm trufflehog || true
             docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
@@ -43,10 +43,10 @@ node {
               echo "Good to go" 
             }
             else {
-              echo "Warning! Secrets are committed into your git repository." 
-	      currentBuild.Result = "UNSTABLE"
+              echo "Warning! Secrets are committed into your git repository."
+	      throw error
             }
-	  
+	  }
         } 
         
 	stage ('Source Composition Analysis')
