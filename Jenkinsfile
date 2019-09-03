@@ -8,6 +8,7 @@
 
 def repoName="";
 def app_type="";
+def workspace="";
 
 node {
         stage ('Checkout SCM') 
@@ -99,6 +100,8 @@ node {
 	    sh "rm anchore_images || true"
             sh """ echo "$dockerImage" > anchore_images"""
             anchore 'anchore_images'
+	    sh "mkdir -p reports/Anchore-Engine"  
+	    sh "cp /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_engine"
 	  }
         }
         
