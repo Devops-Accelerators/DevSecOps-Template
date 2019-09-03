@@ -47,7 +47,6 @@ node {
           }
         } */
         
-      //try {
 	stage ('Source Composition Analysis')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -70,50 +69,47 @@ node {
             sh "mv *.json *.html reports/snyk"
 	  }
 	}
-     // }
-     // catch (error) {
-	//    echo "Moving fwd"
-     // }
 
         
         /*stage ('SAST')
         {
-	  if (appType.equalsIgnoreCase("Java")) {
-	    withSonarQubeEnv('sonarqube') {
-	      dir("${repoName}"){
-	        sh "mvn clean package sonar:sonar"
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    if (appType.equalsIgnoreCase("Java")) {
+	      withSonarQubeEnv('sonarqube') {
+	        dir("${repoName}"){
+	          sh "mvn clean package sonar:sonar"
+	        }
 	      }
-	    }
 	    
-	  timeout(time: 1, unit: 'HOURS') {   
-	    def qg = waitForQualityGate() 
-	    if (qg.status != 'OK') {     
-	      error "Pipeline aborted due to quality gate failure: ${qg.status}"    
-	    }	
-	  }
-	 }
-        }*/
+	    timeout(time: 1, unit: 'HOURS') {   
+	      def qg = waitForQualityGate() 
+	      if (qg.status != 'OK') {     
+	        error "Pipeline aborted due to quality gate failure: ${qg.status}"    
+	        }	
+	      }
+	     }
+            }
+	  }*/
         
         stage ('Container Image Scan')
         {
-          try { 
-            sh "rm anchore_images || true"
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    sh "rm anchore_images || true"
             sh """ echo "$dockerImage" > anchore_images"""
             anchore 'anchore_images'
-          }
-          catch(error){
-            currentBuild.result = 'FAILURE'
-          }
+	  }
         }
         
         /*stage ('DAST')
         {
-          sh """
-            export ARCHERY_HOST='http://127.0.0.1:8000'
-            export TARGET_URL=$targetURL
-            bash `pwd`/Archerysec-ZeD/zapscan.sh || true
-          """
-        } */
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    sh """
+              export ARCHERY_HOST='http://127.0.0.1:8000'
+              export TARGET_URL=$targetURL
+              bash `pwd`/Archerysec-ZeD/zapscan.sh || true
+            """
+          }
+	}*/
   
         stage ('Clean up')
         {
