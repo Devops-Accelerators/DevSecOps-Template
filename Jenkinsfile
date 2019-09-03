@@ -17,7 +17,7 @@ node {
           sh "ls -al" 
         }
   
-        stage ('pre-build setup')
+       /* stage ('pre-build setup')
         {
          sh"""
          docker-compose -f Sonarqube/sonar.yml up -d
@@ -45,7 +45,7 @@ node {
           }
             
             
-        } 
+        } */
         
         stage ('Source Composition Analysis')
         {
