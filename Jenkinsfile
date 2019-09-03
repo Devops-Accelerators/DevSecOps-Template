@@ -9,59 +9,60 @@
 def repoName="";
 def app_type="";
 node {
-  
-        stage ('Checkout SCM') 
+		
+		stage ('Checkout SCM') 
         {
           checkout scm
           workspace = pwd ()
           sh "ls -al" 
         }
   
-       /* stage ('pre-build setup')
+        /*stage ('pre-build setup')
         {
-         sh"""
-         docker-compose -f Sonarqube/sonar.yml up -d
-         mkdir -p Anchore-Engine/db
-         docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-         docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
-         """
+          sh """
+          docker-compose -f Sonarqube/sonar.yml up -d
+          mkdir -p Anchore-Engine/db
+          docker-compose -f Anchore-Engine/docker-compose.yaml up -d
+          docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
+          """
         }
         
         stage ('Check secrets')
         {
            sh """
-            rm trufflehog || true
-            docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
-            cat trufflehog
-            mkdir -p reports/trufflehog
-            mv trufflehog reports/trufflehog
-            """
-           def truffle = readFile "reports/trufflehog/trufflehog"
-          if (truffle.length() == 0){
-           echo "Good to go" 
-          }
-          else{
-           echo "Warning! Secrets are committed into your git repository." 
-          }
-            
-            
+           rm trufflehog || true
+           docker run gesellix/trufflehog --json --regex ${appRepoURL} > trufflehog
+           cat trufflehog
+           mkdir -p reports/trufflehog
+           mv trufflehog reports/trufflehog
+           """
+           
+		   def truffle = readFile "reports/trufflehog/trufflehog"
+		   
+		   if (truffle.length() == 0){
+             echo "Good to go" 
+           }
+           else {
+             echo "Warning! Secrets are committed into your git repository." 
+           }
         } */
         
         stage ('Source Composition Analysis')
         {
-	  sh "git clone ${appRepoURL} || true" 
+	      sh "git clone ${appRepoURL} || true" 
           repoName = sh(returnStdout: true, script: """echo \$(basename ${appRepoURL.trim()})""").trim()
           repoName=sh(returnStdout: true, script: """echo ${repoName} | sed 's/.git//g'""").trim()
-	  if (appType.equalsIgnoreCase("Java"))
-		{
-		  app_type = "pom.xml"	
-		}
-	  else{
-		  app_type = "package.json"
-		  dir ("${repoName}"){
-			sh "npm install"
-		  }
-	  	}
+	  
+	      if (appType.equalsIgnoreCase("Java")) {
+		    app_type = "pom.xml"	
+	      }
+	      else {
+		    app_type = "package.json"
+		    dir ("${repoName}") {
+			  sh "npm install"
+		    }
+	      }
+	  
           snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
           sh "mkdir -p reports/snyk"
           sh "mv *.json *.html reports/snyk"
@@ -69,21 +70,21 @@ node {
         
         /*stage ('SAST')
         {
-          // sonarqube
-          withSonarQubeEnv('sonarqube') {
-            dir("${repoName}"){
-                sh "mvn clean package sonar:sonar"
-            }
-          }
-          sh "rm -rf ${repoName}"
-          
-          timeout(time: 1, unit: 'HOURS') {   
-				    def qg = waitForQualityGate() 
-				    if (qg.status != 'OK') {     
-					    error "Pipeline aborted due to quality gate failure: ${qg.status}"    
-					  }	
-				  } 
-          
+		
+		  if (appType.equalsIgnoreCase("Java")) {
+			  withSonarQubeEnv('sonarqube') {
+				dir("${repoName}"){
+				  sh "mvn clean package sonar:sonar"
+				}
+			  }
+			  
+			  timeout(time: 1, unit: 'HOURS') {   
+				  def qg = waitForQualityGate() 
+					if (qg.status != 'OK') {     
+						error "Pipeline aborted due to quality gate failure: ${qg.status}"    
+					}	
+			  }
+		  }
         }
         
         stage ('Container Image Scan')
