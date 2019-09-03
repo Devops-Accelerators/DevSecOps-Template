@@ -67,7 +67,7 @@ node {
               }
 	    }
 	  
-            snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
+            snykSecurity projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
             sh "mkdir -p reports/snyk"
             sh "mv *.json *.html reports/snyk"
 	  }
@@ -117,8 +117,7 @@ node {
         stage ('Clean up')
         {
           sh """
-	    mkdir -p reports/Anchore-Engine
-	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_engine ||  true
+	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_Engine ||  true
 	    docker system prune -f
             docker-compose -f Sonarqube/sonar.yml down
             docker-compose -f Anchore-Engine/docker-compose.yaml down
