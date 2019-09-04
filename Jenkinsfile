@@ -44,7 +44,7 @@ node {
             }
             else {
               echo "Warning! Secrets are committed into your git repository."
-	      throw error
+	      throw new Exception("Secrets might be committed into your git repo")
             }
 	  }
         } 
@@ -70,7 +70,7 @@ node {
 		   
 	    def snykFile = readFile "snyk_report.html"
 	    if (snykFile.exists()) {
-		throw error    
+		throw new Exception("Vulnerable dependencies found!")    
 	    }
 	    else {
 		echo "Please enter the app repo URL"
