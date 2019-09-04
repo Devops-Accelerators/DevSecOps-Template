@@ -66,7 +66,16 @@ node {
               }
 	    }
 	  
-            snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}" 
+            snykSecurity failOnIssues: false, projectName: '$BUILD_NUMBER', severity: 'high', snykInstallation: 'SnykSec', snykTokenId: 'snyk-token', targetFile: "${repoName}/${app_type}"
+		   
+	    def snykFile = readFile "snyk_report.html"
+	    if (snykFile.exists()) {
+		throw error    
+	    }
+	    else {
+		echo "Please enter the app repo URL"
+	    	currentBuild.Result = "FAILURE"
+	    }
    	    
 	  }
 	}
