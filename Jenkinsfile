@@ -131,10 +131,10 @@ node {
 	    mv *.json *.html reports/snyk
 	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_Engine ||  true
 	    docker system prune -f
-            docker-compose -f Sonarqube/sonar.yml down
-            docker-compose -f Anchore-Engine/docker-compose.yaml down
           """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
+	    //docker-compose -f Sonarqube/sonar.yml down
+            //docker-compose -f Anchore-Engine/docker-compose.yaml down
         }
 }
        
