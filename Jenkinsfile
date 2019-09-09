@@ -1,5 +1,5 @@
   parameters: 
-    string([name: 'appRepo', value: "Application's git repository"]);
+    [ string(name: 'appRepoURL', value: "Application's git repository"), string(name: 'dockerImage', value: "docker image with tag") ]
     //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
     //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
   //])
