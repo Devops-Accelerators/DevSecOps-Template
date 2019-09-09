@@ -7,7 +7,6 @@ properties ([
     ])
 ])
 
-
 def repoName="";
 def app_type="";
 def workspace="";
@@ -17,14 +16,12 @@ node {
         {
           checkout scm
           workspace = pwd ()
-          sh "ls -al" 
         }
   
         stage ('pre-build setup')
         {
           sh """
           docker-compose -f Sonarqube/sonar.yml up -d
-          mkdir -p Anchore-Engine/db
           docker-compose -f Anchore-Engine/docker-compose.yaml up -d
           """
 	
