@@ -1,10 +1,9 @@
-/*properties ([
-  parameters([
-    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "git url of the application's repo", name: 'appRepoURL'],
-    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
-    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
-  ])
-])*/
+  parameters: 
+    string([name: 'appRepo', value: "Application's git repository"]);
+    //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
+    //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
+  //])
+//])
 
 def repoName="";
 def app_type="";
@@ -113,7 +112,8 @@ node {
         stage ('DAST')
         {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	    /*sh """
+	    /*removing archerysec
+	      sh """
               export ARCHERY_HOST='http://127.0.0.1:8000'
               export TARGET_URL=$targetURL
               bash `pwd`/Archerysec-ZeD/zapscan.sh || true
