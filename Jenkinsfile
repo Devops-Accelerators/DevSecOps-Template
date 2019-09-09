@@ -134,8 +134,10 @@ node {
             mv trufflehog reports/trufflehog
 	    mkdir -p reports/snyk
 	    mv *.json *.html reports/snyk
-	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/ ||  true
-	    cp -r Archerysec-ZeD/zap_result/ reports/
+	    mkdir -p reports/Anchore-Engine
+	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore-Engine ||  true
+	    mkdir -p reports/OWASP
+	    cp -r Archerysec-ZeD/zap_result/owasp_report reports/OWASP
 	    docker system prune -f
           """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
