@@ -24,8 +24,10 @@ node {
           docker-compose -f Sonarqube/sonar.yml up -d
           mkdir -p Anchore-Engine/db
           docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-          docker-compose -f Archerysec-ZeD/docker-compose.yml up -d
+	  mkdir -p Archerysec-Zed/zap_result
+	  chmod 1000 Archerysec-Zed/zap_result
           """
+	
         }
         
         stage ('Check secrets')
@@ -113,11 +115,15 @@ node {
         stage ('DAST')
         {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	    sh """
+	    /*sh """
               export ARCHERY_HOST='http://127.0.0.1:8000'
               export TARGET_URL=$targetURL
               bash `pwd`/Archerysec-ZeD/zapscan.sh || true
-            """
+            """*/
+	    sh """
+	      
+	      docker run -d -v $(pwd)/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+    	      -t http://www.dvwa.co.uk -J report_json
           }
 	}
   
@@ -129,7 +135,8 @@ node {
             mv trufflehog reports/trufflehog
 	    mkdir -p reports/snyk
 	    mv *.json *.html reports/snyk
-	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore_Engine ||  true
+	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/ ||  true
+	    cp -r Archerysec-Zed/zap_result/ reports/
 	    docker system prune -f
           """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
