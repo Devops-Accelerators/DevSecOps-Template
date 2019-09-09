@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:10.1-alpine
     volumes:
-      - ./dbdata:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=archerysec
       - POSTGRES_PASSWORD=archerysec
