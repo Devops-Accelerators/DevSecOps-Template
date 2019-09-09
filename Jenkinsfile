@@ -5,12 +5,14 @@
   ])
 ]) */
 
-parameters {
-  string defaultValue: '', description: 'Application\'s git repository', name: 'appRepoURL', trim: true
-  string defaultValue: '', description: 'Docker image with tag', name: 'dockerImage', trim: true
-  string defaultValue: '', description: 'Web application URL', name: 'targetURL', trim: true
-  choice choices: ['Java', 'Node', 'Angular'], description: 'Type of application', name: 'appType'
-}
+properties ([
+  parameters ([
+    string defaultValue: '', description: 'Application\'s git repository', name: 'appRepoURL', trim: true
+    string defaultValue: '', description: 'Docker image with tag', name: 'dockerImage', trim: true
+    string defaultValue: '', description: 'Web application URL', name: 'targetURL', trim: true
+    choice choices: ['Java', 'Node', 'Angular'], description: 'Type of application', name: 'appType'
+    ])
+])
 
 
 def repoName="";
