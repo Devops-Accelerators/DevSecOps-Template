@@ -122,7 +122,7 @@ node {
             """*/
 	    sh """
 	      
-	      docker run -d -v $(pwd)/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+	      docker run -d -v `pwd`/Archerysec-Zed/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
     	      -t http://www.dvwa.co.uk -J report_json
 	    """
           }
