@@ -128,21 +128,23 @@ node {
   
         stage ('Clean up')
         {
-          sh """
-	    rm -r ${repoName}
-	    mkdir -p reports/trufflehog
-            mv trufflehog reports/trufflehog
-	    mkdir -p reports/snyk
-	    mv *.json *.html reports/snyk
-	    mkdir -p reports/Anchore-Engine
-	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore-Engine ||  true
-	    mkdir -p reports/OWASP
-	    cp -r Archerysec-ZeD/zap_result/owasp_report reports/OWASP
-	    docker system prune -f
-          """
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh """
+	      rm -r ${repoName}
+	      mkdir -p reports/trufflehog
+              mv trufflehog reports/trufflehog
+	      mkdir -p reports/snyk
+	      mv *.json *.html reports/snyk
+	      mkdir -p reports/Anchore-Engine
+	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore-Engine ||  true
+	      mkdir -p reports/OWASP
+	      cp -r Archerysec-ZeD/zap_result/owasp_report reports/OWASP
+	      docker system prune -f
+            """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
 	    //docker-compose -f Sonarqube/sonar.yml down
             //docker-compose -f Anchore-Engine/docker-compose.yaml down
+	  }
         }
 }
        
