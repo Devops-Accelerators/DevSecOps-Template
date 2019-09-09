@@ -1,9 +1,17 @@
-  parameters: 
+ /* parameters: 
     [ string(name: 'appRepoURL', value: "Application's git repository"), string(name: 'dockerImage', value: "docker image with tag") ]
-    //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
-    //[$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
-  //])
-//])
+    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
+    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
+  ])
+]) */
+
+parameters {
+  string defaultValue: '', description: 'Application\'s git repository', name: 'appRepoURL', trim: true
+  string defaultValue: '', description: 'Docker image with tag', name: 'dockerImage', trim: true
+  string defaultValue: '', description: 'Web application URL', name: 'targetURL', trim: true
+  choice choices: ['Java', 'Node', 'Angular'], description: 'Type of application', name: 'appType'
+}
+
 
 def repoName="";
 def app_type="";
@@ -121,7 +129,7 @@ node {
 	    sh """
 	      rm -rf Archerysec-ZeD/zap_result/owasp_report || true
 	      docker run -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
-    	      -t http://www.dvwa.co.uk -J owasp_report
+    	      -t ${targetURL} -J owasp_report
 	    """
           }
 	}
