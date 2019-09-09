@@ -1,18 +1,9 @@
- /* parameters: 
-    [ string(name: 'appRepoURL', value: "Application's git repository"), string(name: 'dockerImage', value: "docker image with tag") ]
-    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "name of the image", name: 'dockerImage'],
-    [$class: 'GlobalStringParameterDefinition', defaultValue: '', description: "web application's url", name: 'targetURL']
-  ])
-]) */
-
 properties ([
   parameters ([
-    string(name: 'appRepoURL', value: ""),
-    string(name: 'dockerImage', value: "devopsaccelerator/javavulnerable:9")
-   /* string defaultValue: '', description: 'Application\'s git repository', name: 'appRepoURL', trim: true
-    string defaultValue: '', description: 'Docker image with tag', name: 'dockerImage', trim: true
-    string defaultValue: '', description: 'Web application URL', name: 'targetURL', trim: true
-    choice choices: ['Java', 'Node', 'Angular'], description: 'Type of application', name: 'appType'*/
+    string(name: 'appRepoURL', value: "", description: "Application's git repository"),
+    string(name: 'dockerImage', value: "", description: "docker Image with tag"),
+    string(name: 'targetURL', value: '', description: "Web application's URL"),
+    choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of appliation')
     ])
 ])
 
