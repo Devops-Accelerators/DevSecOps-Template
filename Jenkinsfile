@@ -24,8 +24,8 @@ node {
           docker-compose -f Sonarqube/sonar.yml up -d
           mkdir -p Anchore-Engine/db
           docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-	  mkdir -p Archerysec-Zed/zap_result
-	  chmod 1000 Archerysec-Zed/zap_result
+	  mkdir -p Archerysec-ZeD/zap_result
+	  chmod 1000 Archerysec-ZeD/zap_result
           """
 	
         }
@@ -122,7 +122,7 @@ node {
             """*/
 	    sh """
 	      
-	      docker run -d -v `pwd`/Archerysec-Zed/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+	      docker run -d -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
     	      -t http://www.dvwa.co.uk -J report_json
 	    """
           }
@@ -137,7 +137,7 @@ node {
 	    mkdir -p reports/snyk
 	    mv *.json *.html reports/snyk
 	    cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/ ||  true
-	    cp -r Archerysec-Zed/zap_result/ reports/
+	    cp -r Archerysec-ZeD/zap_result/ reports/
 	    docker system prune -f
           """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
