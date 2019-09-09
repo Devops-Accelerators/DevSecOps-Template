@@ -14,17 +14,20 @@ def workspace="";
 node {
         stage ('Checkout SCM') 
         {
-          checkout scm
-          workspace = pwd ()
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            checkout scm
+            workspace = pwd ()
+	  }
         }
   
         stage ('pre-build setup')
         {
-          sh """
-          docker-compose -f Sonarqube/sonar.yml up -d
-          docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-          """
-	
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh """
+            docker-compose -f Sonarqube/sonar.yml up -d
+            docker-compose -f Anchore-Engine/docker-compose.yaml up -d
+            """
+	  }
         }
         
         stage ('Check secrets')
