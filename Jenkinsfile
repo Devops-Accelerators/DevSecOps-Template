@@ -120,7 +120,7 @@ node {
             """*/
 	    sh """
 	      rm -rf Archerysec-ZeD/zap_result/owasp_report || true
-	      docker run -d -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+	      docker run -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
     	      -t http://www.dvwa.co.uk -J owasp_report
 	    """
           }
@@ -139,6 +139,7 @@ node {
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore* ./reports/Anchore-Engine ||  true
 	      mkdir -p reports/OWASP
 	      cp  Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
+	      cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
 	      docker system prune -f
             """
 	    //docker-compose -f Archerysec-ZeD/docker-compose.yml down
