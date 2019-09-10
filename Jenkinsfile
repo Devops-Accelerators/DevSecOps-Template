@@ -23,10 +23,14 @@ node {
         stage ('pre-build setup')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-            sh """
-            docker-compose -f Sonarqube/sonar.yml up -d
-            docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-            """
+	    if (appRepoURL) {
+	      sh """
+              docker-compose -f Sonarqube/sonar.yml up -d
+              docker-compose -f Anchore-Engine/docker-compose.yaml up -d
+              """
+	    }
+	    else
+	      echo "Skipping stage"
 	  }
         }
         
