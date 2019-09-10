@@ -144,10 +144,8 @@ node {
 	      
             """
 //	    cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
-	    input {
-	    message 'Stop all containers? '
-  	    ok 'Yes'
- 	    }
+	    input message: 'Stop all containers?', ok: 'Yes'
+		  
 	    sh """
 	    docker system prune -f
 	    docker-compose -f Sonarqube/sonar.yml down
