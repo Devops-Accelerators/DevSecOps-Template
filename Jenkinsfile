@@ -141,9 +141,9 @@ node {
               mv trufflehog reports/trufflehog
 	      mv *.json *.html reports/snyk
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
-	      cp  Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
-	      cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
+	      
             """
+//	    cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
 	    input {
 	    message 'Stop all containers? '
   	    ok 'Yes'
