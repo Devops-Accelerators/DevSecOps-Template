@@ -38,7 +38,7 @@ services:
   anchore-db:
     image: "postgres:9"
     volumes:
-     - db:/var/lib/postgresql/data/pgdata/:z
+     - ./db:/var/lib/postgresql/data/pgdata/:z
     environment:
       - POSTGRES_PASSWORD=mysecretpassword
       - PGDATA=/var/lib/postgresql/data/pgdata/
