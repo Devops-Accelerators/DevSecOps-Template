@@ -128,6 +128,22 @@ node {
 	    """
           }
 	}
+	
+	/*stage ('Inspec')
+	{
+  	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    sh "inspec exec"
+		
+	  }	
+	}*/
+	
+	stage ('Breach and Attack Simulation') {
+	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    sh """
+	      docker-compose -f Infection-Monkey/docker-compose up -d
+	    """
+	  }
+	}
   
         stage ('Clean up')
         {
