@@ -26,6 +26,7 @@ node {
 	      sh """
               docker-compose -f Sonarqube/sonar.yml up -d
               docker-compose -f Anchore-Engine/docker-compose.yaml up -d
+	      docker-compose -f Infection-Monkey/docker-compose.yml up -d
               """
 	  }
         }
@@ -139,9 +140,7 @@ node {
 	
 	stage ('Breach and Attack Simulation') {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	    sh """
-	      docker-compose -f Infection-Monkey/docker-compose up -d
-	    """
+	      echo https:\/\/lab1.southcentralus.cloudapp.azure.com:5000
 	  }
 	}
   
