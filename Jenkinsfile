@@ -140,7 +140,7 @@ node {
 	
 	stage ('Breach and Attack Simulation') {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	      echo https:\/\/lab1.southcentralus.cloudapp.azure.com:5000
+	      echo "https://lab1.southcentralus.cloudapp.azure.com:5000"
 	  }
 	}
   
