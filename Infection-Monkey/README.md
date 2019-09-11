@@ -7,7 +7,7 @@ The Infection Monkey is an open source Breach and Attack Simulation (BAS) tool t
 
 # Getting Started
 
- - Run the docker-compose file and navigate to https://<server-ip>:5000.
+ - Run the docker-compose file and navigate to https://\<server-ip\>:5000.
  - To get the Infection Monkey running as fast as possible, click Run Monkey.
  - It can be run on any machine of your choice. Follow the instructions provided once you've reached the infection monkey page and you'll be able to run your scans successfully.
  
