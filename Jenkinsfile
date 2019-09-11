@@ -141,6 +141,11 @@ node {
 	stage ('Breach and Attack Simulation') {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	      echo "https://lab1.southcentralus.cloudapp.azure.com:5000"
+	      sh """
+	       curl -O -k https://127.0.0.1:5000/api/monkey/download/monkey-linux-64
+	       chmod +x monkey-linux-64
+	       ./monkey-linux-64 m0nk3y -s 127.0.0.1:5000
+	      """
 	  }
 	}
   
