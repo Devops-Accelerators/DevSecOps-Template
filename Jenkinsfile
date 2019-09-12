@@ -148,6 +148,11 @@ node {
 	      """
 	  }
 	}
+	
+	stage ('Inspec') {
+		
+		
+	}
   
         stage ('Clean up')
         {
