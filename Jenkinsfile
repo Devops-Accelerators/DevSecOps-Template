@@ -149,11 +149,6 @@ node {
 	  }
 	}
 	
-	stage ('Inspec') {
-		
-		
-	}
-  
         stage ('Clean up')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
