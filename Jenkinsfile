@@ -130,13 +130,12 @@ node {
           }
 	}
 	
-	/*stage ('Inspec')
+	stage ('Inspec')
 	{
   	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	    sh "inspec exec"
-		
+	    sh "inspec exec Inspec/hardening-test"
 	  }	
-	}*/
+	}
 	
 	stage ('Breach and Attack Simulation') {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
