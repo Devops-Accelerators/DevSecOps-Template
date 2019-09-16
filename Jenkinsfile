@@ -136,6 +136,7 @@ node {
 	      curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 	      */
 	    sh """
+	      rm inspec_results || true
 	      inspec exec Inspec/hardening-test -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results
 	      cat inspec_results | jq
 	    """
