@@ -2,8 +2,11 @@ properties ([
   parameters ([
     string(name: 'appRepoURL', value: "", description: "Application's git repository"),
     string(name: 'dockerImage', value: "", description: "docker Image with tag"),
-    string(name: 'targetURL', value: '', description: "Web application's URL"),
-    choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of appliation')
+    string(name: 'targetURL', value: "", description: "Web application's URL"),
+    choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of application')
+    string(name: 'hostMachineName', value: "", description: "Hostname of the machine")
+    string(name: 'hostMachineIP', value: "", description: "Public IP of the host machine")
+    password(name: 'hostMachinePassword', value: "", description: "Password of the target machine")
     ])
 ])
 
@@ -128,8 +131,8 @@ node {
 	{
   	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	    sh """
-	      curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
-	      inspec exec Inspec/hardening-test
+	      curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec 
+	      inspec exec Inspec/hardening-test -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results
 	    """
 	  }	
 	}
