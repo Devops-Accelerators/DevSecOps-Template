@@ -137,7 +137,7 @@ node {
 	      */
 	    sh """
 	      rm inspec_results || true
-	      inspec exec Inspec/hardening-test -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results
+	      inspec exec Inspec/hardening-test --suppress-warnings -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results 
 	      cat inspec_results | jq
 	    """
 	  }	
@@ -158,14 +158,14 @@ node {
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             sh """
-	      rm -r ${repoName}
+	      rm -r ${repoName} || true
 	      mkdir -p reports/trufflehog
 	      mkdir -p reports/snyk
 	      mkdir -p reports/Anchore-Engine
 	      mkdir -p reports/OWASP
 	      mkdir -p reports/Inspec
               mv trufflehog reports/trufflehog
-	      mv *.json *.html reports/snyk
+	      mv *.json *.html reports/snyk || true
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
 	      mv inspec_results reports/Inspec
             """
