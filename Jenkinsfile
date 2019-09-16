@@ -5,8 +5,8 @@ properties ([
     string(name: 'targetURL', value: "", description: "Web application's URL"),
     choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of application'),
     string(name: 'hostMachineName', value: "", description: "Hostname of the machine"),
-    string(name: 'hostMachineIP', value: "", description: "Public IP of the host machine"),
-    password(name: 'hostMachinePassword', value: "", description: "Password of the target machine")
+    string(name: 'hostMachineIP', value: "", description: "Public IP of the host machine")
+   // password(name: 'hostMachinePassword', value: "", description: "Password of the target machine")
     ])
 ])
 
@@ -137,7 +137,7 @@ node {
 	      */
 	    sh """
 	      rm inspec_results || true
-	      inspec exec Inspec/hardening-test -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results 
+	      inspec exec Inspec/hardening-test -b ssh --host=${hostMachineIP} --user=${hostMachineName} -i ~/.ssh/id_rsa --reporter json:./inspec_results
 	      cat inspec_results | jq
 	    """
 	  }	
