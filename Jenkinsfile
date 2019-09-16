@@ -130,9 +130,14 @@ node {
 	stage ('Inspec')
 	{
   	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+	    
+	     /*
+	      RUN THIS COMMAND TO INSTALL INSPEC AS A PACKAGE IN RHEL/UBUNTU/MACOS
+	      curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
+	      */
 	    sh """
-	      curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec 
 	      inspec exec Inspec/hardening-test -t ssh://${hostMachineName}@${hostMachineIP} --password=${hostMachinePassword} --reporter json:./inspec_results
+	      cat inspec_results | jq
 	    """
 	  }	
 	}
@@ -148,7 +153,7 @@ node {
 	  }
 	}*/
 	
-        /*stage ('Clean up')
+        stage ('Clean up')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             sh """
@@ -157,18 +162,20 @@ node {
 	      mkdir -p reports/snyk
 	      mkdir -p reports/Anchore-Engine
 	      mkdir -p reports/OWASP
+	      mkdir -p reports/Inspec
               mv trufflehog reports/trufflehog
 	      mv *.json *.html reports/snyk
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
-           // """
+	      mv inspec_results reports/Inspec
+            """
 	   // cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
 		  
-	/*    sh """
+	    sh """
 	    docker system prune -f
 	    docker-compose -f Sonarqube/sonar.yml down
             docker-compose -f Anchore-Engine/docker-compose.yaml down -v
 	    """
 	  }
-        }*/
+        }
 }
        
