@@ -125,7 +125,7 @@ node {
     	      -t ${targetURL} -J owasp_report
 	    """
           }
-	}*/
+	}
 	
 	stage ('Inspec')
 	{
@@ -133,8 +133,8 @@ node {
 	  
   	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 
-	    //to install inspec as a package
-	    //curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
+	    /*to install inspec as a package
+	    curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec*/
 	    sh """
 	      rm inspec_results || true
 	      inspec exec Inspec/hardening-test -b ssh --host=${hostMachineIP} --user=${hostMachineName} -i ~/.ssh/id_rsa --reporter json:./inspec_results
