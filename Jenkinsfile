@@ -23,7 +23,7 @@ node {
 	  }
         }
   
-        /*stage ('pre-build setup')
+        stage ('pre-build setup')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	      sh """
@@ -167,7 +167,7 @@ node {
               mv trufflehog reports/trufflehog || true
 	      mv *.json *.html reports/snyk || true
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
-	      mv inspec_results reports/Inspec
+	      mv inspec_results reports/Inspec || true
             """
 	   // cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
 		  
