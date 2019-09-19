@@ -120,7 +120,7 @@ node {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 	    sh """
 	      rm -rf Archerysec-ZeD/zap_result/owasp_report || true
-	      docker run -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+	      docker run -v `pwd`/Archerysec-ZeD/:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
     	      -t ${targetURL} -J owasp_report
 	    """
           }
@@ -155,10 +155,9 @@ node {
               mv trufflehog reports/trufflehog || true
 	      mv *.json *.html reports/snyk || true
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
-	      cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/ || ture
 	      mv inspec_results reports/Inspec || true
             """
-	    
+		//cp Archerysec-ZeD/owasp_report reports/OWASP/ || ture	    
 		  
 	    sh """
 	    docker system prune -f
