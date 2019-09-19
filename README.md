@@ -8,5 +8,5 @@ This DevSecOps utility includes various open-source security tools that can scan
 -	Stage 5 (SAST): Inspect the source code of your application and will pinpoint possible security flaws.
 -	Stage 6 (Container Image Scan): Performs a thorough scan on the container images and the vulnerabilities are listed out in a json file.
 -	Stage 7 (DAST): Test for security flaws once the application is up and running.
-
+- Stage 8 (Inspec): Tests your infrastructure with a inspec profile in the repo.
 
