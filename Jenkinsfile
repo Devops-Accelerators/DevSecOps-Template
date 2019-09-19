@@ -2,8 +2,11 @@ properties ([
   parameters ([
     string(name: 'appRepoURL', value: "", description: "Application's git repository"),
     string(name: 'dockerImage', value: "", description: "docker Image with tag"),
-    string(name: 'targetURL', value: '', description: "Web application's URL"),
-    choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of appliation')
+    string(name: 'targetURL', value: "", description: "Web application's URL"),
+    choice(name: 'appType', choices: ['Java', 'Node', 'Angular'], description: 'Type of application'),
+    string(name: 'hostMachineName', value: "", description: "Hostname of the machine"),
+    string(name: 'hostMachineIP', value: "", description: "Public IP of the host machine")
+   // password(name: 'hostMachinePassword', value: "", description: "Password of the target machine")
     ])
 ])
 
@@ -115,40 +118,51 @@ node {
         stage ('DAST')
         {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	    /*removing archerysec
-	      sh """
-              export ARCHERY_HOST='http://127.0.0.1:8000'
-              export TARGET_URL=$targetURL
-              bash `pwd`/Archerysec-ZeD/zapscan.sh || true
-            """*/
 	    sh """
 	      rm -rf Archerysec-ZeD/zap_result/owasp_report || true
-	      docker run -v `pwd`/Archerysec-ZeD/zap_result:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+	      docker run -v `pwd`/Archerysec-ZeD/:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
     	      -t ${targetURL} -J owasp_report
 	    """
           }
 	}
-  
+	
+	stage ('Inspec')
+	{
+	  
+	  
+  	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+
+	    /*to install inspec as a package
+	    curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec*/
+	    sh """
+	      rm inspec_results || true
+	      inspec exec Inspec/hardening-test -b ssh --host=${hostMachineIP} --user=${hostMachineName} -i ~/.ssh/id_rsa --reporter json:./inspec_results
+	      cat inspec_results | jq
+	    """
+	  }	
+	}
+	
         stage ('Clean up')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             sh """
-	      rm -r ${repoName}
+	      rm -r ${repoName} || true
 	      mkdir -p reports/trufflehog
 	      mkdir -p reports/snyk
 	      mkdir -p reports/Anchore-Engine
 	      mkdir -p reports/OWASP
-              mv trufflehog reports/trufflehog
-	      mv *.json *.html reports/snyk
+	      mkdir -p reports/Inspec
+              mv trufflehog reports/trufflehog || true
+	      mv *.json *.html reports/snyk || true
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
-	      
+	      mv inspec_results reports/Inspec || true
             """
-//	    cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
+		//cp Archerysec-ZeD/owasp_report reports/OWASP/ || ture	    
 		  
 	    sh """
 	    docker system prune -f
 	    docker-compose -f Sonarqube/sonar.yml down
-            docker-compose -f Anchore-Engine/docker-compose.yaml down
+            docker-compose -f Anchore-Engine/docker-compose.yaml down -v
 	    """
 	  }
         }
