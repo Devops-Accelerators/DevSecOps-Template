@@ -29,7 +29,6 @@ node {
 	      sh """
               docker-compose -f Sonarqube/sonar.yml up -d
               docker-compose -f Anchore-Engine/docker-compose.yaml up -d
-	      docker-compose -f Infection-Monkey/docker-compose.yml up -d
               """
 	  }
         }
@@ -143,17 +142,6 @@ node {
 	  }	
 	}
 	
-	/*stage ('Breach and Attack Simulation') {
-	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-	      echo "https://lab1.southcentralus.cloudapp.azure.com:5000"
-	      sh """
-	       curl -O -k https://127.0.0.1:5000/api/monkey/download/monkey-linux-64
-	       chmod +x monkey-linux-64
-	       ./monkey-linux-64 m0nk3y -s 127.0.0.1:5000
-	      """
-	  }
-	}*/
-	
         stage ('Clean up')
         {
 	  catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -167,9 +155,10 @@ node {
               mv trufflehog reports/trufflehog || true
 	      mv *.json *.html reports/snyk || true
 	      cp -r /var/lib/jenkins/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/archive/Anchore*/*.json ./reports/Anchore-Engine ||  true
+	      cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/ || ture
 	      mv inspec_results reports/Inspec || true
             """
-	   // cp Archerysec-ZeD/zap_result/owasp_report reports/OWASP/
+	    
 		  
 	    sh """
 	    docker system prune -f
